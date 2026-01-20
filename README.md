@@ -1,5 +1,5 @@
 
-# Habits API
+# Notes API
 
 A simple Express.js REST API for managing notes with MySQL database integration.
 
@@ -45,3 +45,4 @@ The API runs on `http://localhost:3000`
 ## API Version
 
 Current version: `1.0.0`
+
