@@ -52,7 +52,21 @@ app.get("/note/:id", (req, res) => {
         }
     })
 })
-
+// IT MUST SPECIFY ABSOLUTLY WHAT IS WRITE IN THE NOTE, OR YOU GET A ERROR 404
+app.get("/note/search/:note", (req, res) => {
+    const note = String(req.params.note)
+    connection.query("SELECT * FROM notes WHERE note = ?", [note], (err, rows) => {
+        if(!err) {
+            if (rows.length > 0){
+                return res.json(defs.response("Success", "Note found", rows.affectedRows, rows))
+            } else {
+                return res.status(404).json(defs.response("Error", "Note not found", 0, null))
+            }
+        } else {
+            res.status(500).json("Error", err.message, 0, null)
+        }
+    })
+})
 // create a note 
 app.post("/note/create", (req, res) => {
     const postData = req.body
