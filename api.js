@@ -52,12 +52,14 @@ app.get("/note/:id", (req, res) => {
         }
     })
 })
-// IT MUST SPECIFY ABSOLUTLY WHAT IS WRITE IN THE NOTE, OR YOU GET A ERROR 404
 app.get("/note/search/:note", (req, res) => {
     const note = String(req.params.note)
-    connection.query("SELECT * FROM notes WHERE note = ?", [note], (err, rows) => {
-        if(!err) {
-            if (rows.length > 0){
+    if (!note || note.trim() === "") {
+        return res.status(400).json(defs.response("Error", "Search term is required", 0, null))
+    }
+    connection.query("SELECT * FROM notes WHERE note LIKE ?", [`%${note}%`], (err, rows) => {
+        if (!err) {
+            if (rows.length > 0) {
                 return res.json(defs.response("Success", "Note found", rows.affectedRows, rows))
             } else {
                 return res.status(404).json(defs.response("Error", "Note not found", 0, null))
@@ -71,13 +73,18 @@ app.get("/note/search/:note", (req, res) => {
 app.post("/note/create", (req, res) => {
     const postData = req.body
     const note = postData.note
+    const title = postData.title
     //check if data is invalid
-    if (note.trim() === "") {
-        return res.status(400).json(defs.response("Error", "The NOTE must be a content", 0, null))
+    if (!title || title.trim() === "") {
+        return res.status(400).json(defs.response("Error", "Title can not be empty", 0, null))
     }
-    connection.query("INSERT INTO notes (note, created_at, modified_at) VALUES (?, NOW(), NOW())", [note], (err, result) => {
+    if (!note || note.trim() === "") {
+        return res.status(400).json(defs.response("Error", "Note must be a content", 0, null))
+    }
+    // query connection  
+    connection.query("INSERT INTO notes (title, note, created_at, modified_at) VALUES (?, ?, NOW(), NOW())", [title, note], (err, result) => {
         if (!err) {
-            return res.status(200).json(defs.response("Success", "Note created", result.affectedRows, null))
+            return res.status(201).json(defs.response("Success", "Note created", result.affectedRows, null))
         } else {
             return res.status(500).json(defs.response("Error", err.message, 0, null))
         }
@@ -86,7 +93,14 @@ app.post("/note/create", (req, res) => {
 // edit NOTE
 app.put("/note/edit/:id", (req, res) => {
     const postData = req.body
+    const title = postData.title
+    if (!title || title.trim() === "") {
+        return res.status(400).json(defs.response("Error", "Title can not be empty", 0, null))
+    }
     const note = postData.note
+    if (!note || note.trim() === "") {
+        return res.status(400).json(defs.response("Error", "Note must be a content", 0, null))
+    }
     const id = req.params.id
     // query
     connection.query("UPDATE notes SET note = ?, modified_at = NOW() WHERE id = ?", [note, id], (err, result) => {
