@@ -1,9 +1,9 @@
 // require const's
+const dotenv = require("dotenv").config()
 const express = require("express")
 const mysql = require("mysql2")
 const cors = require("cors")
 const dataCfg = require("./src/cfg")
-const { createConnection } = require("node:net")
 const defs = require("./src/responses")
 const app = express()
 
@@ -24,7 +24,7 @@ app.use((req, res, next) => {
     }
 })
 
-const connection = mysql.createConnection(dataCfg.user)
+const connection = mysql.createConnection(dataCfg.db)
 // get NOTES
 app.get("/allNotes", (req, res) => {
     connection.query("SELECT * FROM notes", (err, result) => {
