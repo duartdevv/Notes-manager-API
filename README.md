@@ -92,6 +92,7 @@ The API runs on `http://localhost:3000`
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | GET | `/allNotes` | Retrieve all notes |
+| SEARCH | `/note/search/:search` | Search note |
 | POST | `/note/create` | Create a new note |
 | PUT | `/note/edit/:id` | Update a note by ID |
 | DELETE | `/note/delete/:id` | Delete a specific note |
@@ -100,3 +101,4 @@ The API runs on `http://localhost:3000`
 ## API Version
 
 Current version: `1.0.0`
+
