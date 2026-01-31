@@ -97,21 +97,21 @@ app.post("/note/create", (req, res) => {
 app.put("/note/edit/:id", (req, res) => {
     const postData = req.body
     const title = postData.title
+    const note = postData.note 
+    const id = req.params.id
     if (!title || title.trim() === "") {
         return res.status(400).json(defs.response("Error", "Title can not be empty", 0, null))
     }
-    const note = postData.note
     if (!note || note.trim() === "") {
         return res.status(400).json(defs.response("Error", "Note must be a content", 0, null))
     }
-    const id = req.params.id
     // query
-    connection.query("UPDATE notes SET note = ?, modified_at = NOW() WHERE id = ?", [note, id], (err, result) => {
+    connection.query("UPDATE notes SET title = ?, note = ? WHERE id = ?", [title, note, id], (err, result) => {
         if (!err) {
             if (result.affectedRows > 0) {
                 res.json(defs.response("Success", "Note sussefully updated", result.affectedRows, result))
             } else {
-                return res.status(404).json(defs.response("error", "ID not found"), 0, null)
+                return res.status(404).json(defs.response("Error", "ID not found", 0, null))
             }
         } else {
             return res.status(500).json(defs.response("Internal error", err.message, 0, null))
