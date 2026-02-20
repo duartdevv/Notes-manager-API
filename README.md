@@ -33,7 +33,7 @@ DB_PORT=3306
 
 ## Endpoint Details
 
-### GET `/allNotes`
+### GET `/notes`
 Returns all notes from the database.
 
 ### GET `/note/:id`
@@ -42,19 +42,19 @@ Retrieve a specific note by ID. Returns 404 if not found.
 ### GET `/note/search/:note`
 Search notes by content using pattern matching.
 
-### POST `/note/create`
+### POST `/note`
 Create a new note. Requires `title` and `note` in request body.
 
-### PUT `/note/edit/:id`
+### PUT `/note/:id`
 Update a note's content. Requires `title` and `note` in request body.
 
-### DELETE `/note/delete/:id`
+### DELETE `/note/:id`
 Delete a specific note by ID.
 
-### DELETE `/notes/deleteAll`
+### DELETE `/note/deleteAll`
 Delete all notes from the database.
 
-# Habits API
+# Notes API
 
 A simple Express.js REST API for managing notes with MySQL database integration.
 
@@ -91,12 +91,12 @@ The API runs on `http://localhost:3000`
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/allNotes` | Retrieve all notes |
-| SEARCH | `/note/search/:search` | Search note |
-| POST | `/note/create` | Create a new note |
-| PUT | `/note/edit/:id` | Update a note by ID |
-| DELETE | `/note/delete/:id` | Delete a specific note |
-| DELETE | `/notes/deleteAll` | Delete all notes |
+| GET | `/notes` | Retrieve all notes |
+| GET | `/note/search/:note` | Search note |
+| POST | `/note` | Create a new note |
+| PUT | `/note/:id` | Update a note by ID |
+| DELETE | `/note/:id` | Delete a specific note |
+| DELETE | `/notes` | Delete all notes |
 
 ## API Version
 
